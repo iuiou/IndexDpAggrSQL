@@ -10,7 +10,7 @@ incomelist = list()
 agelist = list()
 
 num = 0
-for i in range(5000000):
+while True:
     income = random.randint(0,200000)
     sumnum = random.randint(1, 20)
     for j in range(sumnum):
