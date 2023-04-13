@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from dataModel.Index import CustomIndex
 
 
 class attr:
@@ -31,8 +32,9 @@ class table:
     def __init__(self, name, schema, raw_data):
         self.name = name
         self.schema = schema
-        self.data = dict()
+        self.data = dict() # name to attribute
         self.indexKeySet = list()
+        self.raw_data = raw_data
         for key in schema.keys():
             self.data[key] = attr(key, schema[key]["type"], raw_data)
             if schema[key]["NeedIndex"] == True:
@@ -41,8 +43,17 @@ class table:
     def getAttr(self, name):
         return self.data[name]
 
-    # def create_costom_index(self, target, aggr):
-    #     for name in self.indexKeySet:
+    def create_costom_index(self, target, aggr, eps, targetRoot):
+        customIndex = CustomIndex(self.raw_data, self.indexKeySet, aggr, target)
+        indexFrame = customIndex.IndextoDataFrame(addnoise=False, eps=0)
+        noisyIndexFrame = customIndex.IndextoDataFrame(addnoise=True, eps=0.5)
+        indexFrame.to_csv(targetRoot + '/oneDimIndex.csv', index = False)
+        noisyIndexFrame.to_csv(targetRoot + '/noisyOneDimIndex.csv', index = False)
+
+
+
+
+
 
 
 

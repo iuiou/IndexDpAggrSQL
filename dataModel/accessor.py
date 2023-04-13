@@ -1,6 +1,6 @@
 import pandas as pd
 import json
-from model import table
+from dataModel.model import table
 
 class Csvaccessor:
     def __init__(self, root, config):
