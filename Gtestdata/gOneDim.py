@@ -9,19 +9,21 @@ namelist = list()
 incomelist = list()
 agelist = list()
 
+person = [1, 3, 10, 100, 1000]
+
 num = 0
 while True:
-    income = random.randint(0,200000)
-    sumnum = random.randint(1, 20)
+    income = np.random.randint(0,200000)
+    sumnum = np.random.randint(1, 20)
+    age = np.random.normal(38,12.5,sumnum)
     for j in range(sumnum):
         num = num + 1
-        age = random.randint(0,30)
         namelist.append('fzh')
         incomelist.append(income)
-        agelist.append(age)
-        if num == 5000000:
+        agelist.append(int(age[j]))
+        if num == 3000000:
             break
-    if num == 5000000:
+    if num == 3000000:
         break
 
 df = pd.DataFrame({'name' : namelist, 'income' : incomelist, 'age' : agelist})

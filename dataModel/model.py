@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from dataModel.Index import CustomIndex
+from dataModel.Index import SegmentTIndex
 
 
 class attr:
@@ -8,6 +9,7 @@ class attr:
         self.name = name
         self.type = type
         self.dcarray = list()
+        self.mp = dict()
         if type == 'int':
             self.array = list(map(int, raw_data[name].values.tolist()))
         elif type == 'float':
@@ -26,7 +28,12 @@ class attr:
             return
         self.dcarray = list(set(self.array))
         self.dcarray.sort()
-        self.dcarray.insert(0, 0)  # insert 0 into begin
+        rk = 1
+        for num in self.dcarray:
+            self.mp[num] = rk
+            rk = rk + 1
+        self.dcarray.insert(0, 0)  # insert 0 into begin, first number is dcarray[1]
+
 
 class table:
     def __init__(self, name, schema, raw_data):
@@ -46,9 +53,16 @@ class table:
     def create_costom_index(self, target, aggr, eps, targetRoot):
         customIndex = CustomIndex(self.raw_data, self.indexKeySet, aggr, target)
         indexFrame = customIndex.IndextoDataFrame(addnoise=False, eps=0)
-        noisyIndexFrame = customIndex.IndextoDataFrame(addnoise=True, eps=0.5)
-        indexFrame.to_csv(targetRoot + '/oneDimIndex.csv', index = False)
-        noisyIndexFrame.to_csv(targetRoot + '/noisyOneDimIndex.csv', index = False)
+        noisyIndexFrame = customIndex.IndextoDataFrame(addnoise=True, eps=eps)
+        indexFrame.to_csv(targetRoot + '/oneDimIndex.csv', index=False)
+        noisyIndexFrame.to_csv(targetRoot + '/noisyOneDimIndex.csv', index=False)
+
+    def create_SegmentT_index(self, target, aggr, eps, targetRoot):
+        segmentTIndex = SegmentTIndex(self.data, self.indexKeySet, aggr, target)
+        indexFrame = segmentTIndex.IndextoDataFrame(addnoise=False, eps=0)
+        noisyIndexFrame = segmentTIndex.IndextoDataFrame(addnoise=True, eps=eps)
+        indexFrame.to_csv(targetRoot + '/oneDimSegmentTIndex.csv', index=False)
+        noisyIndexFrame.to_csv(targetRoot + '/noisyOneDimSemgentTIndex.csv', index = False)
 
 
 
