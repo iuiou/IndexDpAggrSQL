@@ -23,7 +23,7 @@ class SegmentSet:
         return hash(ans)
 
 class CustomIndex:
-    def __init__(self, raw_data : pd.DataFrame, IndexKeySet, aggrType, target):
+    def __init__(self, raw_data, IndexKeySet, aggrType, target):
         self.index = dict()
         self.otherInf = dict()
         self.namelist = IndexKeySet
@@ -104,7 +104,7 @@ class SegmentTIndex:
                 if tup not in self.otherInf:
                     self.otherInf[tup] = 0
                 if aggrType == 'Sum':
-                    value = self.raw_data[target].iloc[i]
+                    value = self.raw_data[target].array[i]
                     self.index[tup] += value
                     self.otherInf[tup] = max(value, self.otherInf[tup])
                 elif aggrType == 'Count':

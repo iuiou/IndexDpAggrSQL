@@ -7,28 +7,20 @@ class SegmentTree:
         self.max = len(attri.dcarray) - 1
         self.seglist = list()
         self.build(self.min, self.max)
-        self.raw_data = attri.dcarray
-
-    def build(self, L, R):
-        self.seglist.append((L,R))
-        if L == R:
-            return
-        mid = (L + R) // 2
-        self.build(L, mid)
-        self.build(mid+1, R)
+        self.dcarray = attri.dcarray
 
     def find(self, L, R, pos, ans):
         ans.append((L,R))
         if L == R:
             return
         mid = (L + R) // 2
-        if pos <= self.raw_data[mid]:
+        if pos <= self.dcarray[mid]:
             self.find(L, mid, pos, ans)
         else:
             self.find(mid+1, R, pos, ans)
 
     def decompose(self, L, R, l, r, ans):
-        if l <= self.raw_data[L] and r >= self.raw_data[R]:
+        if l <= self.dcarray[L] and r >= self.dcarray[R]:
             ans.append((L, R))
             return
         mid = (L + R) // 2
@@ -37,8 +29,8 @@ class SegmentTree:
         if r > mid:
             self.decompose(mid+1, R, l, r, ans)
 
-    def show(self):
-        print(self.seglist)
+    # def show(self):
+    #     print(self.seglist)
 
 
 

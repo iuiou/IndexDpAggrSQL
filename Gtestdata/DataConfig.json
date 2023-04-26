@@ -2,17 +2,21 @@
   "tableName":"",
   "names": [],
   "attrConfig": {
-    "name": {
-      "type" : "str",
-      "NeedIndex" : false
-    },
-    "age": {
-      "type" : "int",
-      "NeedIndex" : false
-    },
-    "income": {
+    "a": {
       "type" : "int",
       "NeedIndex" : true
+    },
+    "b": {
+      "type" : "int",
+      "NeedIndex" : true
+    },
+    "c": {
+      "type" : "int",
+      "NeedIndex" : true
+    },
+    "d": {
+      "type" : "int",
+      "NeedIndex" : false
     }
   }
 }

@@ -42,7 +42,7 @@ class table:
         self.data = dict() # name to attribute
         self.indexKeySet = list()
         self.raw_data = raw_data
-        for key in schema.keys():
+        for key in list(self.raw_data):
             self.data[key] = attr(key, schema[key]["type"], raw_data)
             if schema[key]["NeedIndex"] == True:
                 self.indexKeySet.append(key)
@@ -52,17 +52,20 @@ class table:
 
     def create_costom_index(self, target, aggr, eps, targetRoot):
         customIndex = CustomIndex(self.raw_data, self.indexKeySet, aggr, target)
-        indexFrame = customIndex.IndextoDataFrame(addnoise=False, eps=0)
         noisyIndexFrame = customIndex.IndextoDataFrame(addnoise=True, eps=eps)
-        indexFrame.to_csv(targetRoot + '/oneDimIndex.csv', index=False)
-        noisyIndexFrame.to_csv(targetRoot + '/noisyOneDimIndex.csv', index=False)
+        noisyIndexFrame.to_csv(targetRoot, index=False)
 
     def create_SegmentT_index(self, target, aggr, eps, targetRoot):
-        segmentTIndex = SegmentTIndex(self.data, self.indexKeySet, aggr, target)
-        indexFrame = segmentTIndex.IndextoDataFrame(addnoise=False, eps=0)
+        segmentTIndex = SegmentTIndex(self.data, self.indexKeySet)
+        segmentTIndex.buildIndex(aggr, target)
         noisyIndexFrame = segmentTIndex.IndextoDataFrame(addnoise=True, eps=eps)
-        indexFrame.to_csv(targetRoot + '/oneDimSegmentTIndex.csv', index=False)
-        noisyIndexFrame.to_csv(targetRoot + '/noisyOneDimSemgentTIndex.csv', index = False)
+        noisyIndexFrame.to_csv(targetRoot, index=False)
+
+    def create_normal_index(self, target, aggr, targetRoot):
+        normalIndex = CustomIndex(self.raw_data, self.indexKeySet, aggr, target)
+        indexFrame = normalIndex.IndextoDataFrame(addnoise=False, eps = 0)
+        indexFrame.to_csv(targetRoot, index=False)
+
 
 
 
